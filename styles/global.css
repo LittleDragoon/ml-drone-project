@@ -5,3 +5,10 @@ input:-webkit-autofill:focus {
   -webkit-background-clip: text;
   caret-color: white;
 }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overscroll-behavior-y: none;
+}

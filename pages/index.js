@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -16,20 +17,18 @@ export default function HomePage() {
           Drone Simulator
         </div>
         <div className="flex gap-x-4">
-          <button
-            type="button"
-            className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-700 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
-            onClick={() => alert("The page Training is incoming")}
+          <Link
+            href="/training-selection"
+            className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
           >
             Run a Training
-          </button>
-          <button
-            type="button"
-            className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-700 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
-            onClick={() => alert("The page History is incoming")}
+          </Link>
+          <Link
+            href="/training-history"
+            className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
           >
             Training History
-          </button>
+          </Link>
         </div>
       </div>
     </div>
