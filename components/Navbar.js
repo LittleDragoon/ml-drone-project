@@ -9,8 +9,8 @@ const navItems = [
     name: "Home",
   },
   {
-    path: "/training-selection",
-    name: "Training Selection",
+    path: "/training-setup",
+    name: "Training Setup",
   },
   {
     path: "/training-history",

@@ -18,10 +18,10 @@ export default function HomePage() {
         </div>
         <div className="flex gap-x-4">
           <Link
-            href="/training-selection"
+            href="/training-setup"
             className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
           >
-            Run a Training
+            Training Setup
           </Link>
           <Link
             href="/training-history"
