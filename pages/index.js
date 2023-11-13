@@ -1,7 +1,21 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Auth } from "@/components/Auth";
+import { useAuth } from "../hooks/useAuth";
+import { auth } from "../firebase/index";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function HomePage() {
+  const { user, isUserSignedIn } = useAuth();
+
+  const logOut = () => {
+    auth.signOut();
+    toast.info(`👋 Bye Bye ${user.displayName} `, {
+      containerId: "Log In & Log Out",
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center relative from-gray-900 to-gray-700 bg-gradient-to-b min-h-screen ">
       <Image
@@ -16,20 +30,35 @@ export default function HomePage() {
         <div className="font-semibold text-6xl pt-16 pb-8 font-bold text-gray-200">
           Drone Simulator
         </div>
-        <div className="flex gap-x-4">
-          <Link
-            href="/training-setup"
-            className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
-          >
-            Training Setup
-          </Link>
-          <Link
-            href="/training-history"
-            className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
-          >
-            Training History
-          </Link>
-        </div>
+        {!isUserSignedIn ? (
+          <Auth />
+        ) : (
+          <div className="flex gap-x-4">
+            <Link
+              href="/training-setup"
+              className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
+            >
+              Training Setup
+            </Link>
+            <Link
+              href="/training-history"
+              className="text-white bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
+            >
+              Training History
+            </Link>
+            <button
+              className="text-white bg-gradient-to-br from-red-800 via-red-700 to-red-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2"
+              onClick={logOut}
+            >
+              Log Out
+            </button>
+          </div>
+        )}
+        <ToastContainer
+          autoClose={2000}
+          theme="colored"
+          containerId={"Log In & Log Out"}
+        />
       </div>
     </div>
   );
