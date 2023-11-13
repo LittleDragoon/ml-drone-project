@@ -22,7 +22,7 @@ export default function NavBar() {
   let pathname = usePathname() || "/";
 
   return (
-    <div className="border border-stone-800/90 rounded-sm mb-12 sticky py-5 z-[100] bg-gradient-to-b from-green-600 to-green-800 shadow-sm">
+    <div className="border border-stone-800/90 rounded-sm mb-12 sticky py-5 z-[100] bg-gradient-to-b from-green-600 to-green-800 shadow-sm min-w-full">
       <nav className="flex gap-2 relative justify-center w-full z-[100] rounded-lg">
         {navItems.map((item, index) => {
           const isActive = item.path === pathname;
