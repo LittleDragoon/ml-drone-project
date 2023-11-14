@@ -58,6 +58,7 @@ export default function HomePage() {
           autoClose={2000}
           theme="colored"
           containerId={"Log In & Log Out"}
+          pauseOnHover={false}
         />
       </div>
     </div>

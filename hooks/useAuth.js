@@ -10,13 +10,16 @@ export const useAuth = () => {
   const [user, setUser] = React.useState("");
   const [isUserSignedIn, setIsUserSignedIn] = React.useState(false);
 
-  // "return" from useEffect ensures that the function is cleaned and only called once with empty array dependency
-  // Prevent potential memory leaks
   React.useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user ?? "");
       setIsUserSignedIn(user ? true : false);
     });
+
+    // Cleanup function for useEffect
+    // Prevent potential memory leaks
+    return () => unsubscribe();
   }, []);
+
   return { user, isUserSignedIn };
 };
