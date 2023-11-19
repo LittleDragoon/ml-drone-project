@@ -1,21 +1,23 @@
-"use client";
 import React from "react";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { AuthUserContext } from "@/context/authUserContext";
+import { AuthUserContext } from "@/context/AuthUserContext";
+import ColoredLayout from "./ColoredLayout";
 
 const ProtectedRoute = ({ children }) => {
   const useAuth = () => useContext(AuthUserContext);
-  const { user, isUserSignedIn } = useAuth();
+  const { isUserSignedIn, loading } = useAuth();
 
   const router = useRouter();
 
-  React.useEffect(() => {
-    if (!isUserSignedIn) {
+  const currentRoute = router.pathname;
+
+  if (currentRoute !== "/") {
+    if (!loading && !isUserSignedIn) {
       router.replace("/");
     }
-    return () => {};
-  }, [isUserSignedIn, router]);
+    if (loading || !isUserSignedIn) return <ColoredLayout />;
+  }
 
   return <>{children}</>;
 };

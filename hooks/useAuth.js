@@ -7,13 +7,15 @@ import { auth } from "../firebase/index";
  * @returns user
  */
 export const useAuth = () => {
-  const [user, setUser] = React.useState("");
+  const [user, setUser] = React.useState(null);
   const [isUserSignedIn, setIsUserSignedIn] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user ?? "");
       setIsUserSignedIn(user ? true : false);
+      setLoading(false);
     });
 
     // Cleanup function for useEffect
@@ -21,5 +23,5 @@ export const useAuth = () => {
     return () => unsubscribe();
   }, []);
 
-  return { user, isUserSignedIn };
+  return { user, isUserSignedIn, loading };
 };

@@ -17,7 +17,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center relative from-gray-900 to-gray-700 bg-gradient-to-b min-h-screen ">
+    <div className="flex flex-col flex-1 items-center justify-center min-h-screen">
       <Image
         src="/drone.png"
         className="absolute top-0 z-0"

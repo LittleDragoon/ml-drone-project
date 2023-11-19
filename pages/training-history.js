@@ -2,7 +2,6 @@ import NavBar from "@/components/Navbar";
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 import clsx from "clsx";
-import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function TrainingHistory() {
   const status = "completed";
@@ -13,13 +12,13 @@ export default function TrainingHistory() {
   const formattedDeadlineDate = deadlineDate;
 
   return (
-    <ProtectedRoute>
-      <div className="flex flex-col items-center from-gray-900 to-gray-700 bg-gradient-to-b min-h-screen">
-        <NavBar />
-        <div className="flex flex-col items-center justify-center font-semibold text-4xl font-bold text-gray-200 pb-8">
-          Training History
-        </div>
-        <div className="flex flex-col border-r border-b border-l border-gray-400 bg-white rounded-b p-4 w-4/5 ">
+    <>
+      <NavBar />
+      <div className="flex flex-col items-center justify-center font-semibold text-4xl font-bold text-gray-200 pb-8">
+        Training History
+      </div>
+      <div className="flex justify-center">
+        <div className="border-r border-b border-l border-gray-400 bg-white rounded-b p-4 w-4/5 ">
           <div className="flex items-center gap-x-2">
             <div className="flex-1 text-gray-900 font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
               {title}
@@ -48,6 +47,6 @@ export default function TrainingHistory() {
           </p>
         </div>
       </div>
-    </ProtectedRoute>
+    </>
   );
 }
