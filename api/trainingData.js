@@ -8,7 +8,7 @@ import {
 import { db } from "../firebase/index";
 import { toast } from "react-toastify";
 
-const COLLECTION_NAME = "trainingList";
+export const DB_COLLECTION = "trainingList";
 // Add a new document with a automatic generated "id".
 export const addTrainingSetup = async ({
   userId,
@@ -17,7 +17,7 @@ export const addTrainingSetup = async ({
   status,
 }) => {
   try {
-    await addDoc(collection(db, COLLECTION_NAME), {
+    await addDoc(collection(db, DB_COLLECTION), {
       user: userId,
       title: title,
       description: description,

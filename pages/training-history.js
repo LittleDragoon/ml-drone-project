@@ -2,14 +2,57 @@ import NavBar from "@/components/Navbar";
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 import clsx from "clsx";
+import { DB_COLLECTION } from "@/api/trainingData";
+import { db } from "../firebase/index";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { useAuth } from "../hooks/useAuth";
 
 export default function TrainingHistory() {
   const status = "completed";
   const title = "Training 1";
   const description = "Description 1";
-  const deadlineDate = "25-10-2022";
+  const formattedDeadlineDate = "25-10-2022";
 
-  const formattedDeadlineDate = deadlineDate;
+  const { user, isUserSignedIn } = useAuth();
+
+  const [trainingList, setTrainingList] = React.useState([]);
+  const getAllDocs = () => {
+    if (!isUserSignedIn) {
+      setTrainingList([]);
+      return;
+    }
+
+    const orderedQuery = query(
+      collection(db, DB_COLLECTION),
+      where("user", "==", user.uid),
+      orderBy("createdAt", "desc")
+    );
+    // onSnapshot always listen to changes in firebase and the callback functon gets executed
+    const unsubscribe = onSnapshot(orderedQuery, (querySnapchot) => {
+      let userTemporaryTodoList = [];
+      querySnapchot.docs.forEach((doc) => {
+        //doc has a "hidden" id props which is the automatic generated id of the document
+        userTemporaryTodoList.push({
+          ...doc.data(),
+          id: doc.id,
+        });
+      });
+      setTrainingList(userTemporaryTodoList);
+    });
+
+    // Cleanup the listener when the component unmounts
+    return () => {
+      unsubscribe();
+    };
+  };
+
+  React.useEffect(getAllDocs, [user?.uid, isUserSignedIn]);
 
   return (
     <>
