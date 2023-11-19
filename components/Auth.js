@@ -2,7 +2,6 @@ import React from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/index";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from "react-icons/fc";
 
 export const Auth = () => {

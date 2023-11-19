@@ -1,6 +1,7 @@
 import NavBar from "@/components/Navbar";
 import React from "react";
-import Link from "next/link";
+import { addTrainingSetup } from "@/api/trainingData";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function TrainingSetup() {
   const [requestParams, setRequestParams] = React.useState({
@@ -10,6 +11,7 @@ export default function TrainingSetup() {
     controlAlgorithm: "Reinforcement Learning",
     processorType: "multi-CPU",
   });
+  const { user } = useAuth();
 
   const paramsList = {
     drone: {
@@ -36,6 +38,14 @@ export default function TrainingSetup() {
 
   const categories = Object.keys(paramsList);
 
+  const addTraining = async () => {
+    await addTrainingSetup({
+      userId: user.uid,
+      title: "This is a Title",
+      description: requestParams.drone,
+      status: "completed",
+    });
+  };
   return (
     <>
       <NavBar />
@@ -70,12 +80,12 @@ export default function TrainingSetup() {
               </select>
             );
           })}
-          <Link
-            href="/training-history"
+          <button
             className="self-end text-white font-medium rounded-lg text-md px-5 py-2 mt-2 text-center bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 "
+            onClick={addTraining}
           >
             Run Training
-          </Link>
+          </button>
         </div>
       </div>
     </>

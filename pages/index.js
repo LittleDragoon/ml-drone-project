@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Auth } from "@/components/Auth";
 import { useAuth } from "../hooks/useAuth";
 import { auth } from "../firebase/index";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function HomePage() {
   const { user, isUserSignedIn } = useAuth();
@@ -54,12 +54,6 @@ export default function HomePage() {
             </button>
           </div>
         )}
-        <ToastContainer
-          autoClose={2000}
-          theme="colored"
-          containerId={"Log In & Log Out"}
-          pauseOnHover={false}
-        />
       </div>
     </div>
   );
