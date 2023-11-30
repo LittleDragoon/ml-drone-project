@@ -2,6 +2,9 @@ import NavBar from "@/components/Navbar";
 import React from "react";
 import { addTrainingSetup } from "@/api/trainingData";
 import { useAuth } from "@/hooks/useAuth";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 
 export default function TrainingSetup() {
   const [requestParams, setRequestParams] = React.useState({
@@ -46,6 +49,34 @@ export default function TrainingSetup() {
       status: "completed",
     });
   };
+
+  //In the future when the server is ON. IT WORKS !
+  // const addTrainingRequest = async () => {
+  //   try {
+  //     const response = await axios.post("http://localhost:5000/", {
+  //       title: "This is a Title",
+  //       uid: user?.uid,
+  //       mid: uuidv4(),
+  //       timestamp: new Date().getTime(),
+  //       // Warning, should not be higher than 4 at the moment
+  //       nb_cores: 4,
+  //       epochs: 3,
+  //       env_id: "DroneHoverBulletEnv-v0",
+  //       alg: "ppo",
+  //     });
+
+  //     toast.success(`Training Successful`, {
+  //       containerId: "Training Card",
+  //     });
+  //   } catch (error) {
+  //     toast.error(`Training failed`, {
+  //       containerId: "Training Card",
+  //     });
+  //     throw new Error(`Error in adding. Here is the reason : ${error}`);
+  //   }
+  // };
+
+  if (!user) return;
   return (
     <>
       <NavBar />
