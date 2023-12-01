@@ -39,7 +39,6 @@ export default function TrainingHistory() {
   };
 
   React.useEffect(getAllDocs, [user?.uid, isUserSignedIn]);
-
   return (
     <>
       <NavBar />
