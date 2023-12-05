@@ -1,6 +1,7 @@
 import { FaTrash } from "react-icons/fa";
 import clsx from "clsx";
 import React, { lazy, Suspense } from "react";
+import { RxCross1 } from "react-icons/rx";
 
 const TrainingCard = ({
   title = "This is a Title",
@@ -17,6 +18,7 @@ const TrainingCard = ({
   const [showLazyOverlayPage, setShowLazyOverlayPage] = React.useState(false);
 
   const OverlayPage = lazy(() => import("@/components/overlay/Overlay"));
+  if (!progress) return null;
 
   const values = Object.values(progress).reduce(
     (acc, epochData) => {
@@ -72,18 +74,27 @@ const TrainingCard = ({
           onClick={() => setShowLazyOverlayPage(false)}
         >
           <div
-            className="flex flex-col bg-white p-6 rounded shadow-lg w-11/12 min-h-[90%] max-h-full"
+            className="flex flex-col bg-white pb-6 px-6 pt-2 rounded shadow-lg w-11/12 min-h-[90%] max-h-full"
             onClick={(event) => event.stopPropagation()}
           >
+            <div className="flex">
+              <div className="flex flex-1 items-center justify-center text-gray-700 font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
+                Training Results
+              </div>
+              <div className="flex">
+                {/* TODO center CROSS button  */}
+                <button
+                  className="mt-4 p-2 h-[50px] flex flex-1 items-center justify-center self-center"
+                  onClick={() => setShowLazyOverlayPage(false)}
+                >
+                  <RxCross1 size={24} />
+                </button>
+              </div>
+            </div>
+
             <Suspense fallback={<div>Loading...</div>}>
               <OverlayPage values={values} />
             </Suspense>
-            <button
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
-              onClick={() => setShowLazyOverlayPage(false)}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}

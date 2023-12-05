@@ -10,13 +10,14 @@ export default function TrainingSetup() {
   const [requestParams, setRequestParams] = React.useState({
     drone: "Crazyflie 2.0",
     repositoryGIT: "Phoenix",
-    motion: "Hover",
     controlAlgorithm: "Reinforcement Learning",
-    processorType: "multi-CPU",
+    processorType: "Multi-CPU",
   });
+
+  const [title, setTitle] = React.useState("");
   const { user } = useAuth();
 
-  const paramsList = {
+  const constParamsList = {
     drone: {
       id: "drone-id",
       values: ["Crazyflie 2.0", "Crazyflie 2.1"],
@@ -25,21 +26,40 @@ export default function TrainingSetup() {
       id: "repositoryGIT-id",
       values: ["Phoenix", "GymPybullet"],
     },
-    motion: {
-      id: "motion-id",
-      values: ["Hover", "TakeOff"],
-    },
     controlAlgorithm: {
       id: "controlAlgorithm-id",
       values: ["Reinforcement Learning", "PID"],
     },
     processorType: {
       id: "processorType-id",
-      values: ["CPU", "multi-CPU", "GPU"],
+      values: ["CPU", "Multi-CPU", "GPU"],
     },
   };
 
-  const categories = Object.keys(paramsList);
+  // Title, nb cores, epochs, alg (ppo), env_id (DroneHoverBulletEnv-v0)
+  const varParamsList = {
+    cores: {
+      id: "cores-id",
+      values: [2, 4],
+    },
+    env_id: {
+      id: "env_id-id",
+      values: ["DroneHoverBulletEnv-v0", "DroneTakeOffBulletEnv-v0"],
+    },
+    alg: {
+      id: "alg-id",
+      values: ["PPO", "TRPO"],
+    },
+  };
+
+  const constParamsListCategories = Object.keys(constParamsList);
+  const varParamsListCategories = Object.keys(varParamsList);
+
+  const keyToName = {
+    env_id: "Environment",
+    alg: "Algorithm",
+    cores: "Cores",
+  };
 
   const addTraining = async () => {
     await addTrainingSetup({
@@ -76,22 +96,40 @@ export default function TrainingSetup() {
   //   }
   // };
 
+  const [inputValue, setInputValue] = React.useState("");
+
+  const handleInputChange = (event) => {
+    console.log(event.target.value);
+    console.log("benzhu");
+    let enteredValue = parseInt(event.target.value, 10);
+
+    // Check if the entered value is within the specified range
+    if (enteredValue <= 0 || isNaN(enteredValue)) {
+      // If not, set the input value to the previous valid value (0 in this case)
+      setInputValue("");
+    }
+    if (0 < enteredValue && enteredValue <= 500) {
+      // Update the state with the valid entered value
+      setInputValue(enteredValue);
+    }
+  };
+
   if (!user) return;
   return (
     <>
       <NavBar />
-      <div className="flex flex-col items-center justify-center">
-        <div className="text-4xl font-semibold text-gray-200">
-          Training Setup{" "}
-        </div>
-
-        <div className="flex flex-col gap-y-3 w-2/5 items-center mt-12 mb-8 border border-2 border-slate-500 p-4">
-          {categories.map((category) => {
+      <div className="flex w-full justify-center gap-x-6 ">
+        <div className="flex flex-col justify-center items-center gap-y-2">
+          {/* Section Constantes */}
+          <div className="text-2xl font-semibold text-green-600">
+            Constantes
+          </div>
+          {constParamsListCategories.map((category) => {
             return (
               <select
-                className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
+                className="w-full rounded-sm text-green-400 border border-gray-400 px-2 py-2 bg-transparent"
                 name={category}
-                id={paramsList[category].id}
+                id={constParamsList[category].id}
                 value={requestParams[category]}
                 onChange={(e) => {
                   setRequestParams((requestParams) => ({
@@ -99,9 +137,9 @@ export default function TrainingSetup() {
                     [category]: e.target.value,
                   }));
                 }}
-                key={paramsList[category].id}
+                key={constParamsList[category].id}
               >
-                {paramsList[category]?.values.map((value, index) => {
+                {constParamsList[category]?.values.map((value, index) => {
                   return (
                     <option value={value} key={index}>
                       {value}
@@ -109,6 +147,71 @@ export default function TrainingSetup() {
                   );
                 })}
               </select>
+            );
+          })}
+        </div>
+
+        {/* Section Variables  */}
+        <div className="flex flex-col w-2/5 gap-y-3 items-center mt-12 mb-8 border border-2 border-slate-500 p-4">
+          <div className="text-2xl font-semibold text-gray-200">Variables</div>
+
+          <div className="flex flex-col w-full gap-y-2">
+            <div className="text-white text-md font-semibold">Title</div>
+            <input
+              className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
+              autoFocus={true}
+              value={title}
+              type="text"
+              id="title-id"
+              name="title-name"
+              placeholder="Enter a title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+
+          {/* Epochs */}
+          <div className="flex flex-col w-full gap-y-2">
+            <div className="text-white text-md font-semibold">Epochs</div>
+            <input
+              className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
+              type="number"
+              id="epochs-id"
+              name="epochs-name"
+              onKeyDown={(evt) =>
+                ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
+              }
+              placeholder="Enter the number of epochs between 1 and 500"
+              value={inputValue}
+              onChange={handleInputChange}
+              min="1"
+              max="500"
+            />
+          </div>
+          {varParamsListCategories.map((category) => {
+            return (
+              <div
+                className="flex flex-col w-full gap-y-2"
+                key={varParamsList[category].id}
+              >
+                <div className="text-white text-md font-semibold">
+                  {keyToName[category]}
+                </div>
+                <select
+                  className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
+                  name={category}
+                  id={varParamsList[category].id}
+                  value={requestParams[category]}
+                  onChange={() => {}}
+                >
+                  {varParamsList[category]?.values.map((value, index) => {
+                    return (
+                      <option value={value} key={index}>
+                        {value}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             );
           })}
           <button
