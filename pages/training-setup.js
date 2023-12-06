@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { AuthUserContext } from "@/context/AuthUserContext";
 import { useContext } from "react";
 import axios from "axios";
+import { Tooltip } from "react-tooltip";
+import clsx from "clsx";
 
 export default function TrainingSetup() {
   const { user } = useContext(AuthUserContext);
@@ -200,8 +202,18 @@ export default function TrainingSetup() {
               </div>
             );
           })}
+          <Tooltip id="setup-form-tooltip" />
           <button
-            className="self-end text-white font-medium rounded-lg text-md px-5 py-2 mt-2 text-center bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 "
+            data-tooltip-id="setup-form-tooltip"
+            data-tooltip-content="Fill all the fields to run the training"
+            className={clsx(
+              "self-end text-white font-medium rounded-lg text-md px-5 py-2 mt-2 text-center ",
+              `${
+                requestParams.title === "" || requestParams.epochs === ""
+                  ? "bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] from-red-300 to-red-600"
+                  : "bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 "
+              }`
+            )}
             onClick={addTrainingRequest}
             disabled={requestParams.title === "" || requestParams.epochs === ""}
           >
