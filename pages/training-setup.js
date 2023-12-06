@@ -1,21 +1,25 @@
 import NavBar from "@/components/Navbar";
 import React from "react";
-import { addTrainingSetup } from "@/api/trainingData";
-import { useAuth } from "@/hooks/useAuth";
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
+import { AuthUserContext } from "@/context/AuthUserContext";
+import { useContext } from "react";
+import axios from "axios";
 
 export default function TrainingSetup() {
-  const [requestParams, setRequestParams] = React.useState({
-    drone: "Crazyflie 2.0",
-    repositoryGIT: "Phoenix",
-    controlAlgorithm: "Reinforcement Learning",
-    processorType: "Multi-CPU",
-  });
+  const { user } = useContext(AuthUserContext);
 
-  const [title, setTitle] = React.useState("");
-  const { user } = useAuth();
+  const [requestParams, setRequestParams] = React.useState({
+    title: "",
+    // Not higher than 4
+    nb_cores: 2,
+    epochs: "",
+    env_id: "DroneHoverBulletEnv-v0",
+    alg: "PPO",
+    uid: user?.uid,
+    mid: uuidv4(),
+    timestamp: null,
+  });
 
   const constParamsList = {
     drone: {
@@ -32,11 +36,10 @@ export default function TrainingSetup() {
     },
     processorType: {
       id: "processorType-id",
-      values: ["CPU", "Multi-CPU", "GPU"],
+      values: ["Multi-CPU", "CPU", "GPU"],
     },
   };
 
-  // Title, nb cores, epochs, alg (ppo), env_id (DroneHoverBulletEnv-v0)
   const varParamsList = {
     cores: {
       id: "cores-id",
@@ -61,87 +64,70 @@ export default function TrainingSetup() {
     cores: "Cores",
   };
 
-  const addTraining = async () => {
-    await addTrainingSetup({
-      userId: user.uid,
-      title: "This is a Title",
-      description: requestParams.drone,
-      status: "completed",
+  const changeTitle = (e) => {
+    setRequestParams((request) => {
+      return { ...request, title: e.target.value };
     });
   };
 
-  //In the future when the server is ON. IT WORKS !
-  // const addTrainingRequest = async () => {
-  //   try {
-  //     const response = await axios.post("http://localhost:5000/", {
-  //       title: "This is a Title",
-  //       uid: user?.uid,
-  //       mid: uuidv4(),
-  //       timestamp: new Date().getTime(),
-  //       // Warning, should not be higher than 4 at the moment
-  //       nb_cores: 4,
-  //       epochs: 3,
-  //       env_id: "DroneHoverBulletEnv-v0",
-  //       alg: "ppo",
-  //     });
-
-  //     toast.success(`Training Successful`, {
-  //       containerId: "Training Card",
-  //     });
-  //   } catch (error) {
-  //     toast.error(`Training failed`, {
-  //       containerId: "Training Card",
-  //     });
-  //     throw new Error(`Error in adding. Here is the reason : ${error}`);
-  //   }
-  // };
-
-  const [inputValue, setInputValue] = React.useState("");
-
-  const handleInputChange = (event) => {
-    console.log(event.target.value);
-    console.log("benzhu");
+  const changeEpochs = (event) => {
     let enteredValue = parseInt(event.target.value, 10);
 
     // Check if the entered value is within the specified range
     if (enteredValue <= 0 || isNaN(enteredValue)) {
-      // If not, set the input value to the previous valid value (0 in this case)
-      setInputValue("");
+      setRequestParams((request) => {
+        return { ...request, epochs: "" };
+      });
     }
     if (0 < enteredValue && enteredValue <= 500) {
       // Update the state with the valid entered value
-      setInputValue(enteredValue);
+      setRequestParams((request) => {
+        return { ...request, epochs: enteredValue };
+      });
     }
   };
 
-  if (!user) return;
+  // In the future when the server is ON. IT WORKS !
+  const addTrainingRequest = async () => {
+    try {
+      // const response = await axios.post("http://localhost:5000/", {
+      //   ...requestParams,
+      //   timestamp: new Date().getTime(),
+      // });
+
+      toast.success(`Training Successful`, {
+        containerId: "Training Card",
+      });
+    } catch (error) {
+      toast.error(`Training failed`, {
+        containerId: "Training Card",
+      });
+      throw new Error(`Error in adding. Here is the reason : ${error}`);
+    }
+  };
+
   return (
     <>
       <NavBar />
-      <div className="flex w-full justify-center gap-x-6 ">
-        <div className="flex flex-col justify-center items-center gap-y-2">
-          {/* Section Constantes */}
+      <div className="flex flex-col items-center gap-x-6 ">
+        <div className="flex justify-center items-center gap-x-4">
+          {/* Section Constants */}
           <div className="text-2xl font-semibold text-green-600">
-            Constantes
+            Constants :
           </div>
           {constParamsListCategories.map((category) => {
             return (
               <select
-                className="w-full rounded-sm text-green-400 border border-gray-400 px-2 py-2 bg-transparent"
+                className="rounded-sm text-green-400 border border-gray-400 px-2 py-2 bg-transparent"
+                readOnly
                 name={category}
                 id={constParamsList[category].id}
-                value={requestParams[category]}
-                onChange={(e) => {
-                  setRequestParams((requestParams) => ({
-                    ...requestParams,
-                    [category]: e.target.value,
-                  }));
-                }}
+                value={constParamsList[category].values[0]}
                 key={constParamsList[category].id}
               >
                 {constParamsList[category]?.values.map((value, index) => {
                   return (
-                    <option value={value} key={index}>
+                    <option value={value} key={index} disabled={index !== 0}>
                       {value}
                     </option>
                   );
@@ -160,12 +146,12 @@ export default function TrainingSetup() {
             <input
               className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
               autoFocus={true}
-              value={title}
+              value={requestParams.title}
               type="text"
               id="title-id"
               name="title-name"
               placeholder="Enter a title"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={changeTitle}
             />
           </div>
 
@@ -181,8 +167,8 @@ export default function TrainingSetup() {
                 ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
               }
               placeholder="Enter the number of epochs between 1 and 500"
-              value={inputValue}
-              onChange={handleInputChange}
+              value={requestParams.epochs}
+              onChange={changeEpochs}
               min="1"
               max="500"
             />
@@ -200,7 +186,7 @@ export default function TrainingSetup() {
                   className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
                   name={category}
                   id={varParamsList[category].id}
-                  value={requestParams[category]}
+                  value={varParamsList[category].values[0]}
                   onChange={() => {}}
                 >
                   {varParamsList[category]?.values.map((value, index) => {
@@ -216,7 +202,8 @@ export default function TrainingSetup() {
           })}
           <button
             className="self-end text-white font-medium rounded-lg text-md px-5 py-2 mt-2 text-center bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 "
-            onClick={addTraining}
+            onClick={addTrainingRequest}
+            disabled={requestParams.title === "" || requestParams.epochs === ""}
           >
             Run Training
           </button>

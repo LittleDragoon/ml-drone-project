@@ -9,29 +9,3 @@ import { db } from "../firebase/index";
 import { toast } from "react-toastify";
 
 export const DB_COLLECTION = "trainingList";
-// Add a new document with a automatic generated "id".
-export const addTrainingSetup = async ({
-  userId,
-  title,
-  description,
-  status,
-}) => {
-  try {
-    await addDoc(collection(db, DB_COLLECTION), {
-      user: userId,
-      title: title,
-      description: description,
-      status: status,
-      //to order firebase documents
-      createdAt: new Date().getTime(),
-    });
-    toast.success(`Training Successful`, {
-      containerId: "Training Card",
-    });
-  } catch (error) {
-    toast.error(`Training failed`, {
-      containerId: "Training Card",
-    });
-    throw new Error(`Error in adding. Here is the reason : ${error}`);
-  }
-};

@@ -3,10 +3,11 @@ import React from "react";
 import { db } from "../firebase/index";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import TrainingCard from "@/components/TrainingCard";
-import { useAuth } from "../hooks/useAuth";
+import { AuthUserContext } from "@/context/AuthUserContext";
+import { useContext } from "react";
 
 export default function TrainingHistory() {
-  const { user, isUserSignedIn } = useAuth();
+  const { user, isUserSignedIn } = useContext(AuthUserContext);
 
   const [trainingList, setTrainingList] = React.useState([]);
   const getAllDocs = () => {
