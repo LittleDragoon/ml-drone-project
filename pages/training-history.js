@@ -2,7 +2,7 @@ import NavBar from "@/components/Navbar";
 import React from "react";
 import { db } from "../firebase/index";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import TrainingCard from "@/components/TrainingCard";
+import TrainingCard from "@/components/card/TrainingCard";
 import { AuthUserContext } from "@/context/AuthUserContext";
 import { useContext } from "react";
 

@@ -1,8 +1,7 @@
-import { FaTrash } from "react-icons/fa";
 import clsx from "clsx";
 import React, { lazy, Suspense } from "react";
 import { RxCross1 } from "react-icons/rx";
-import { RiShutDownLine } from "react-icons/ri";
+import DropdownComponent from "./Dropdown";
 
 const TrainingCard = ({
   title = "This is a Title",
@@ -18,7 +17,7 @@ const TrainingCard = ({
   //TODO Use React.portal instead ?
   const [showLazyOverlayPage, setShowLazyOverlayPage] = React.useState(false);
 
-  const OverlayPage = lazy(() => import("@/components/overlay/Overlay"));
+  const OverlayComponent = lazy(() => import("@/components/card/Overlay"));
 
   const values = !progress
     ? null
@@ -55,20 +54,7 @@ const TrainingCard = ({
           >
             {status}
           </div>
-          <button
-            onClick={() => {
-              alert("incoming Shutdown working");
-            }}
-          >
-            <RiShutDownLine size={20} />
-          </button>
-          <button
-            onClick={() => {
-              alert("incoming delete working");
-            }}
-          >
-            <FaTrash size={18} />
-          </button>
+          <DropdownComponent />
         </div>
         <div className="flex gap-x-2 rounded-lg border bg-gray-200 w-fit px-1 text-sm">
           <div>{timestamp}</div>
@@ -93,7 +79,7 @@ const TrainingCard = ({
           onClick={() => setShowLazyOverlayPage(false)}
         >
           <div
-            className="flex flex-col bg-white pb-6 px-6 pt-2 rounded shadow-lg w-11/12 min-h-[90%] max-h-full"
+            className="flex flex-col bg-white pb-6 px-6 pt-2 rounded shadow-lg w-10/12 min-h-[90%] max-h-full"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex">
@@ -112,7 +98,7 @@ const TrainingCard = ({
             </div>
 
             <Suspense fallback={<div>Loading...</div>}>
-              <OverlayPage values={values} />
+              <OverlayComponent values={values} />
             </Suspense>
           </div>
         </div>

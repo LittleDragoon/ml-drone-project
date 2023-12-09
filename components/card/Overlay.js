@@ -1,8 +1,7 @@
-// pages/overlay-page/index.js
 import React from "react";
-import { LineChart } from "@/components/Charts/LineChart";
+import { LineChart } from "@/components/card/LineChart";
 
-const OverlayPage = ({ values }) => {
+const OverlayComponent = ({ values }) => {
   const labels = Array.from(
     { length: values.deltaPiArray.length },
     (_, index) => `epoch-${index + 1}`
@@ -46,4 +45,4 @@ const OverlayPage = ({ values }) => {
   );
 };
 
-export default OverlayPage;
+export default OverlayComponent;
