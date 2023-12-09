@@ -2,6 +2,7 @@ import { FaTrash } from "react-icons/fa";
 import clsx from "clsx";
 import React, { lazy, Suspense } from "react";
 import { RxCross1 } from "react-icons/rx";
+import { RiShutDownLine } from "react-icons/ri";
 
 const TrainingCard = ({
   title = "This is a Title",
@@ -18,18 +19,27 @@ const TrainingCard = ({
   const [showLazyOverlayPage, setShowLazyOverlayPage] = React.useState(false);
 
   const OverlayPage = lazy(() => import("@/components/overlay/Overlay"));
-  if (!progress) return null;
 
-  const values = Object.values(progress).reduce(
-    (acc, epochData) => {
-      acc.deltaPiArray.push(parseFloat(epochData["Loss/DeltaPi"]));
-      acc.deltaValueArray.push(parseFloat(epochData["Loss/DeltaValue"]));
-      acc.piArray.push(parseFloat(epochData["Loss/Pi"]));
-      acc.valueArray.push(parseFloat(epochData["Loss/Value"]));
-      return acc;
-    },
-    { deltaPiArray: [], deltaValueArray: [], piArray: [], valueArray: [] }
-  );
+  const values = !progress
+    ? null
+    : Object.values(progress).reduce(
+        (acc, epochData) => {
+          acc.deltaPiArray.push(parseFloat(epochData["Loss/DeltaPi"]));
+          acc.deltaValueArray.push(parseFloat(epochData["Loss/DeltaValue"]));
+          acc.piArray.push(parseFloat(epochData["Loss/Pi"]));
+          acc.valueArray.push(parseFloat(epochData["Loss/Value"]));
+          return acc;
+        },
+        { deltaPiArray: [], deltaValueArray: [], piArray: [], valueArray: [] }
+      );
+
+  const statusToColor = {
+    completed: "bg-green-300",
+    running: "bg-green-400",
+    error: "bg-red-500",
+    queued: "bg-violet-400",
+    shutdown: "bg-red-500",
+  };
   return (
     <>
       <div className="border-r border-b border-l border-gray-400 bg-white rounded-b p-4 w-4/5 ">
@@ -40,17 +50,24 @@ const TrainingCard = ({
           <div
             className={clsx(
               "uppercase text-xs font-bold rounded-sm p-1",
-              `${status === "pending" ? "bg-orange-300" : "bg-green-300"}`
+              `${statusToColor[status.toLowerCase()]}`
             )}
           >
             {status}
           </div>
           <button
             onClick={() => {
+              alert("incoming Shutdown working");
+            }}
+          >
+            <RiShutDownLine size={20} />
+          </button>
+          <button
+            onClick={() => {
               alert("incoming delete working");
             }}
           >
-            <FaTrash />
+            <FaTrash size={18} />
           </button>
         </div>
         <div className="flex gap-x-2 rounded-lg border bg-gray-200 w-fit px-1 text-sm">
@@ -60,15 +77,17 @@ const TrainingCard = ({
           mid = {mid} <br /> nb_cores = {nb_cores}, epochs = {epochs}, env_id ={" "}
           {env_id}, alg ={alg}
         </p>
-        <button
-          className="bg-red-100 border border-red-400 px-4 py-2 rounded mt-4"
-          onClick={() => setShowLazyOverlayPage(true)}
-        >
-          Show training details
-        </button>
+        {values && (
+          <button
+            className="bg-red-100 border border-red-400 px-4 py-2 rounded mt-4"
+            onClick={() => setShowLazyOverlayPage(true)}
+          >
+            Show training details
+          </button>
+        )}
       </div>
 
-      {showLazyOverlayPage && (
+      {values && showLazyOverlayPage && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[900]"
           onClick={() => setShowLazyOverlayPage(false)}

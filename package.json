@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.2.9",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
     "clsx": "^2.0.0",
     "firebase": "^10.6.0",
+    "framer-motion": "^10.16.16",
     "icons": "^1.0.0",
     "next": "14.0.2",
     "react": "^18.2.0",
