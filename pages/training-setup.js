@@ -1,12 +1,11 @@
 import NavBar from "@/components/Navbar";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { toast } from "react-toastify";
 import { AuthUserContext } from "@/context/AuthUserContext";
 import { useContext } from "react";
-import axios from "axios";
 import clsx from "clsx";
-import { Tooltip, Button } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
+import { addTrainingRequest } from "@/api/trainingData";
 
 export default function TrainingSetup() {
   const { user } = useContext(AuthUserContext);
@@ -89,25 +88,6 @@ export default function TrainingSetup() {
     }
   };
 
-  // In the future when the server is ON. IT WORKS !
-  const addTrainingRequest = async () => {
-    try {
-      // const response = await axios.post("http://localhost:5000/", {
-      //   ...requestParams,
-      //   timestamp: new Date().getTime(),
-      // });
-
-      toast.success(`Training Successful`, {
-        containerId: "Training Card",
-      });
-    } catch (error) {
-      toast.error(`Training failed`, {
-        containerId: "Training Card",
-      });
-      throw new Error(`Error in adding. Here is the reason : ${error}`);
-    }
-  };
-
   return (
     <>
       <NavBar />
@@ -147,7 +127,6 @@ export default function TrainingSetup() {
             <div className="text-white text-md font-semibold">Title</div>
             <input
               className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
-              autoFocus={true}
               value={requestParams.title}
               type="text"
               id="title-id"
@@ -226,7 +205,7 @@ export default function TrainingSetup() {
                     : "bg-gradient-to-br from-green-700 via-green-600 to-green-900 bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 "
                 }`
               )}
-              onClick={addTrainingRequest}
+              onClick={() => addTrainingRequest(requestParams)}
               disabled={
                 requestParams.title === "" || requestParams.epochs === ""
               }
