@@ -16,7 +16,6 @@ const TrainingCard = ({
 }) => {
   //TODO Use React.portal instead ?
   const [showLazyOverlayPage, setShowLazyOverlayPage] = React.useState(false);
-
   const OverlayComponent = lazy(() => import("@/components/card/Overlay"));
 
   const values = !progress
@@ -54,7 +53,10 @@ const TrainingCard = ({
           >
             {status}
           </div>
-          <DropdownComponent />
+          <DropdownComponent
+            status={status}
+            setShowLazyOverlayPage={setShowLazyOverlayPage}
+          />
         </div>
         <div className="flex gap-x-2 rounded-lg border bg-gray-200 w-fit px-1 text-sm">
           <div>{timestamp}</div>
@@ -63,16 +65,7 @@ const TrainingCard = ({
           mid = {mid} <br /> nb_cores = {nb_cores}, epochs = {epochs}, env_id ={" "}
           {env_id}, alg ={alg}
         </p>
-        {values && (
-          <button
-            className="bg-red-100 border border-red-400 px-4 py-2 rounded mt-4"
-            onClick={() => setShowLazyOverlayPage(true)}
-          >
-            Show training details
-          </button>
-        )}
       </div>
-
       {values && showLazyOverlayPage && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[900]"
@@ -87,7 +80,6 @@ const TrainingCard = ({
                 Training Results
               </div>
               <div className="flex">
-                {/* TODO center CROSS button  */}
                 <button
                   className="mt-4 p-2 h-[50px] flex flex-1 items-center justify-center self-center"
                   onClick={() => setShowLazyOverlayPage(false)}
