@@ -6,12 +6,40 @@ import TrainingCard from "@/components/card/TrainingCard";
 import { AuthUserContext } from "@/context/AuthUserContext";
 import { useContext } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { TbSearch } from "react-icons/tb";
+import { IoFilter } from "react-icons/io5";
+
+const filterTrainingList = (filterTitle, filterValues, trainingList) => {
+  if (trainingList.length === 0) return [];
+
+  if (filterTitle.length !== 0 && filterValues.length !== 0) {
+    return trainingList.filter(
+      (training) =>
+        filterValues &&
+        filterValues.includes(training.status) &&
+        training.title.toLowerCase().includes(filterTitle.toLowerCase())
+    );
+  } else if (filterTitle.length !== 0 && filterValues.length === 0) {
+    return trainingList.filter(
+      (training) =>
+        training.title &&
+        training.title.toLowerCase().includes(filterTitle.toLowerCase())
+    );
+  } else if (filterTitle.length === 0 && filterValues.length !== 0) {
+    return trainingList.filter(
+      (training) => training.status && filterValues.includes(training.status)
+    );
+  } else {
+    return trainingList;
+  }
+};
 
 export default function TrainingHistory() {
   const { user, isUserSignedIn } = useContext(AuthUserContext);
-
   const [trainingList, setTrainingList] = React.useState([]);
   const [filterValues, filterSetValues] = React.useState([]);
+  const [filterTitle, setFilterTitle] = React.useState("");
 
   const getAllDocs = () => {
     if (!isUserSignedIn) {
@@ -74,26 +102,36 @@ export default function TrainingHistory() {
     },
   ];
 
-  const filteredTrainingList =
-    filterValues.length !== 0
-      ? trainingList.filter((training) => {
-          return training.status && filterValues.includes(training.status);
-        })
-      : trainingList;
+  const filteredTrainingList = filterTrainingList(
+    filterTitle,
+    filterValues,
+    trainingList
+  );
   return (
     <>
       <NavBar />
       <div className="flex flex-col items-center">
-        <div className="pb-8 w-3/5">
+        <div className="flex pb-8 w-3/5 gap-x-4">
+          <Input
+            type="title"
+            label="Search by title"
+            placeholder="Enter your title"
+            isClearable
+            startContent={<TbSearch size={20} />}
+            value={filterTitle}
+            onValueChange={(value) => setFilterTitle(value)}
+          />
           <Select
-            label="Filter trainings by status"
+            label="Filter by status"
             placeholder="Select a status"
+            size="md"
             className="max-w-xs"
             selectionMode="multiple"
             selectedKeys={filterValues}
             onSelectionChange={(value) => {
               filterSetValues([...value]);
             }}
+            startContent={<IoFilter size={20} />}
           >
             {statusArray.map((status) => (
               <SelectItem
