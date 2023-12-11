@@ -48,8 +48,12 @@ export default function TrainingHistory() {
       </div>
       <div className="flex flex-col items-center gap-y-4">
         {trainingList.length !== 0 &&
-          trainingList.map((training) => (
-            <TrainingCard {...training} key={training.mid} />
+          trainingList.map((training, index) => (
+            <TrainingCard
+              {...training}
+              uid={user?.uid}
+              key={training.mid ?? index}
+            />
           ))}
       </div>
     </>

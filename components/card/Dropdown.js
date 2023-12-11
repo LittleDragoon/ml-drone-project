@@ -12,8 +12,14 @@ import { MdDelete } from "react-icons/md";
 import { RiFolderDownloadFill } from "react-icons/ri";
 import { IoIosOpen } from "react-icons/io";
 import { RiShutDownLine } from "react-icons/ri";
+import { shutdownTrainingRequest } from "@/api/trainingData";
+import { deleteTrainingRequest } from "@/api/trainingData";
 
-const DropdownComponent = ({ setShowLazyOverlayPage, status }) => {
+const DropdownComponent = ({
+  status,
+  dropdownRequestParams,
+  setShowLazyOverlayPage,
+}) => {
   const statusToDisabledKeys = {
     completed: ["shutdown"],
     running: ["open", "download", "delete"],
@@ -62,7 +68,7 @@ const DropdownComponent = ({ setShowLazyOverlayPage, status }) => {
             startContent={<RiShutDownLine size={18} />}
             description="Permanently stop the training"
             onClick={() => {
-              alert("Shutdown feature incoming");
+              shutdownTrainingRequest(dropdownRequestParams);
             }}
           >
             Shutdown
@@ -74,7 +80,10 @@ const DropdownComponent = ({ setShowLazyOverlayPage, status }) => {
             startContent={<MdDelete size={22} />}
             description="Permanently delete the training"
             onClick={() => {
-              alert("Delete feature incoming");
+              deleteTrainingRequest({
+                uid: dropdownRequestParams.uid,
+                mid: dropdownRequestParams.mid,
+              });
             }}
           >
             Delete

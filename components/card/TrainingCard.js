@@ -4,7 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import DropdownComponent from "./Dropdown";
 
 const TrainingCard = ({
-  title = "This is a Title",
+  title = "Auto-generated title",
   mid = "2c02b40bb6de4594aa3752d2538f2c58",
   timestamp = "2023-11-28_11:39:55",
   nb_cores = 4,
@@ -12,6 +12,8 @@ const TrainingCard = ({
   env_id = "DroneHoverBulletEnv-v0",
   alg = "ppo",
   status = "Completed",
+  container_nodename = "",
+  uid,
   progress,
 }) => {
   //TODO Use React.portal instead ?
@@ -38,6 +40,28 @@ const TrainingCard = ({
     queued: "bg-violet-400",
     shutdown: "bg-red-500",
   };
+
+  const dropdownRequestParams = {
+    mid,
+    uid,
+    container_nodename,
+  };
+
+  const formatTimestampOptions = {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
+  const date =
+    typeof timestamp === "number"
+      ? new Intl.DateTimeFormat("en-GB", formatTimestampOptions).format(
+          timestamp
+        )
+      : timestamp;
+
   return (
     <>
       <div className="border-r border-b border-l border-gray-400 bg-white rounded-b p-4 w-4/5 ">
@@ -55,11 +79,12 @@ const TrainingCard = ({
           </div>
           <DropdownComponent
             status={status}
+            dropdownRequestParams={dropdownRequestParams}
             setShowLazyOverlayPage={setShowLazyOverlayPage}
           />
         </div>
         <div className="flex gap-x-2 rounded-lg border bg-gray-200 w-fit px-1 text-sm">
-          <div>{timestamp}</div>
+          <div>{date}</div>
         </div>
         <p className="text-gray-700 text-base text-justify mt-4">
           mid = {mid} <br /> nb_cores = {nb_cores}, epochs = {epochs}, env_id ={" "}
