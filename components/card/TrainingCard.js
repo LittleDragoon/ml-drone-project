@@ -64,8 +64,8 @@ const TrainingCard = ({
 
   return (
     <>
-      <div className="border-r border-b border-l border-gray-400 bg-white rounded-b p-4 w-4/5 ">
-        <div className="flex items-center gap-x-2">
+      <div className="w-full border-r border-b border-l border-gray-400 bg-white rounded-b p-4">
+        <div className="flex items-center gap-x-2 truncate">
           <div className="flex-1 text-gray-900 font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
             {title}
           </div>
@@ -86,7 +86,7 @@ const TrainingCard = ({
         <div className="flex gap-x-2 rounded-lg border bg-gray-200 w-fit px-1 text-sm">
           <div>{date}</div>
         </div>
-        <p className="text-gray-700 text-base text-justify mt-4">
+        <p className="text-gray-700 text-base text-justify mt-4 truncate">
           mid = {mid} <br /> nb_cores = {nb_cores}, epochs = {epochs}, env_id ={" "}
           {env_id}, alg ={alg}
         </p>
