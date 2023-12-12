@@ -9,6 +9,7 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { TbSearch } from "react-icons/tb";
 import { IoFilter } from "react-icons/io5";
+import debounce from "lodash.debounce";
 
 const filterTrainingList = (filterTitle, filterValues, trainingList) => {
   if (trainingList.length === 0) return [];
@@ -46,7 +47,6 @@ export default function TrainingHistory() {
       setTrainingList([]);
       return;
     }
-
     const orderedQuery = query(
       collection(db, "users", user.uid, "models"),
       orderBy("timestamp", "desc")
@@ -107,6 +107,21 @@ export default function TrainingHistory() {
     filterValues,
     trainingList
   );
+
+  const handleChange = (value) => {
+    setFilterTitle(value);
+  };
+  // Memoize the function to avoid recreating it on every render
+  // handleChange does not have any state so the dependency array here is empty
+  const debouncedResults = React.useMemo(() => debounce(handleChange, 300), []);
+
+  // Cleanup the debounce on UNMOUNT only (not on every render)
+  React.useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  }, [debouncedResults]);
+
   return (
     <>
       <NavBar />
@@ -118,8 +133,7 @@ export default function TrainingHistory() {
             placeholder="Enter your title"
             isClearable
             startContent={<TbSearch size={20} />}
-            value={filterTitle}
-            onValueChange={(value) => setFilterTitle(value)}
+            onValueChange={debouncedResults}
           />
           <Select
             label="Filter by status"
