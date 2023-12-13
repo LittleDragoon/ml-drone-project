@@ -2,20 +2,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Auth } from "@/components/Auth";
-import { useAuth } from "../hooks/useAuth";
-import { auth } from "../firebase/index";
-import { toast } from "react-toastify";
+import { AuthUserContext } from "@/context/AuthUserContext";
+import { useContext } from "react";
 
 export default function HomePage() {
-  const { user, isUserSignedIn } = useAuth();
-
-  const logOut = () => {
-    auth.signOut();
-    toast.info(`👋 Bye Bye ${user.displayName} `, {
-      containerId: "Log In & Log Out",
-    });
-  };
-
+  const { isUserSignedIn, logOut } = useContext(AuthUserContext);
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen">
       <Image

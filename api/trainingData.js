@@ -1,10 +1,4 @@
-import {
-  doc,
-  deleteDoc,
-  collection,
-  addDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/index";
 import { toast } from "react-toastify";
 import axios from "axios";

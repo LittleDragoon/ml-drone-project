@@ -1,10 +1,12 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
 export const AuthUserContext = createContext({
   user: null,
   isUserSignedIn: false,
   loading: true,
+  signInWithGoogle: () => {},
+  logOut: () => {},
 });
 
 export const AuthUserProvider = ({ children }) => {

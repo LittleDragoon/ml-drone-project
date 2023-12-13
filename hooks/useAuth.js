@@ -1,5 +1,7 @@
 import React from "react";
 import { auth } from "../firebase/index";
+import { toast } from "react-toastify";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 /**
  *
@@ -11,6 +13,29 @@ export const useAuth = () => {
   const [isUserSignedIn, setIsUserSignedIn] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const name = result.user.displayName;
+        toast.success(`Welcome ${name} `, {
+          containerId: "Log In & Log Out",
+        });
+      })
+      .catch(() => {
+        toast.error("👏 Error in Log in");
+        throw new Error("Error in Log in", {
+          containerId: "Log In & Log Out",
+        });
+      });
+  };
+
+  const logOut = () => {
+    auth.signOut();
+    toast.info(`👋 Bye Bye ${user.displayName} `, {
+      containerId: "Log In & Log Out",
+    });
+  };
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user ?? "");
@@ -23,5 +48,5 @@ export const useAuth = () => {
     return () => unsubscribe();
   }, []);
 
-  return { user, isUserSignedIn, loading };
+  return { user, isUserSignedIn, loading, signInWithGoogle, logOut };
 };
