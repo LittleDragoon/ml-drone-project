@@ -9,7 +9,9 @@ import { NextUIProvider } from "@nextui-org/react";
 function MyApp({ Component, pageProps }) {
   return (
     <NextUIProvider>
+      {/* Use of Context to provide the user data to all the components */}
       <AuthUserProvider>
+        {/* Use of protectedLayout to allow access to authentified user only */}
         <ProtectedLayout>
           <Component {...pageProps} />;
           <ToastContainer
