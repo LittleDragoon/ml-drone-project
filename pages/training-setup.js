@@ -92,8 +92,8 @@ export default function TrainingSetup() {
     <>
       <NavBar />
       <div className="flex flex-col items-center gap-x-6 ">
+        {/* Section Constants */}
         <div className="flex justify-center items-center gap-x-4">
-          {/* Section Constants */}
           <div className="text-2xl font-semibold text-green-600">
             Constants :
           </div>

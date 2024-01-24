@@ -44,8 +44,9 @@ export const shutdownTrainingRequest = async (requestParams) => {
 // Delete a document with an id.
 export const deleteTrainingRequest = async ({ uid, mid }) => {
   try {
-    const documentToDeleteRef = doc(db, "users", uid, "models", mid);
-    await deleteDoc(documentToDeleteRef);
+    alert("It works, you just need to uncomment in the code");
+    // const documentToDeleteRef = doc(db, "users", uid, "models", mid);
+    // await deleteDoc(documentToDeleteRef);
   } catch (err) {
     throw new Error("Error in deleting cards");
   }

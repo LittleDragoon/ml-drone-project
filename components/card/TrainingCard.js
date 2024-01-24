@@ -2,6 +2,17 @@ import clsx from "clsx";
 import React, { lazy, Suspense } from "react";
 import { RxCross1 } from "react-icons/rx";
 import DropdownComponent from "./Dropdown";
+import { Badge } from "@nextui-org/react";
+
+const isDifferenceMoreThan60Days = (timestamp1, timestamp2) => {
+  // Calculate the difference in milliseconds
+  const difference = Math.abs(timestamp1 - timestamp2);
+  const millisecondsInDay = 24 * 60 * 60 * 1000;
+  const daysDifference = difference / millisecondsInDay;
+
+  // Check if the difference is less than 30 days
+  return daysDifference > 60;
+};
 
 const TrainingCard = ({
   title = "Auto-generated title",
@@ -62,8 +73,18 @@ const TrainingCard = ({
         )
       : timestamp;
 
+  const currentTimestamp = new Date().getTime();
+
   return (
-    <>
+    <Badge
+      content="New"
+      size="md"
+      color="danger"
+      placement="top-left"
+      className="shadow-md"
+      //TODO change this into less days
+      isInvisible={isDifferenceMoreThan60Days(currentTimestamp, timestamp)}
+    >
       <div className="w-full border-r border-b border-l border-gray-400 bg-white rounded-b p-4">
         <div className="flex items-center gap-x-2 truncate">
           <div className="flex-1 text-gray-900 font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
@@ -120,7 +141,7 @@ const TrainingCard = ({
           </div>
         </div>
       )}
-    </>
+    </Badge>
   );
 };
 

@@ -126,12 +126,12 @@ export default function TrainingHistory() {
     <>
       <NavBar />
       <div className="flex flex-col items-center">
+        {/* Search bar & filter */}
         <div className="flex pb-8 w-3/5 gap-x-4">
           <Input
             type="title"
             label="Search by title"
             placeholder="Enter your title"
-            isClearable
             startContent={<TbSearch size={20} />}
             onValueChange={debouncedResults}
           />
@@ -167,6 +167,7 @@ export default function TrainingHistory() {
             ))}
           </Select>
         </div>
+        {/* History of all trainings */}
         <div className="flex flex-col items-center gap-y-4 w-3/5">
           {filteredTrainingList.length !== 0 &&
             filteredTrainingList.map((training, index) => (
