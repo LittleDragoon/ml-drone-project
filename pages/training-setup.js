@@ -25,7 +25,7 @@ export default function TrainingSetup() {
   const constParamsList = {
     drone: {
       id: "drone-id",
-      values: ["Crazyflie 2.0", "Crazyflie 2.1"],
+      values: ["Crazyflie 2.1", "Crazyflie 2.0"],
     },
     repositoryGIT: {
       id: "repositoryGIT-id",

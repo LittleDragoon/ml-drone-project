@@ -1,5 +1,5 @@
 <!-- Title -->
-<h1 align="center">Reinforcement Learning x Crazyflie</h1>
+<h1 align="center">Reinforcement Learning x Drône Crazyflie 2.1</h1>
 <div align="center" >Benjamin ZHU - 4A Mines Nancy - Sept 2023 à Jan 2024</div>
 
 <!-- Introduction -->
@@ -17,8 +17,8 @@ You will find the complementary repository (server + AI code) here : [TODO inser
 
 - Clone the repository
 - `npm install`
-- You will need the file `.env` . Contact me on [LinkedIn](https://www.linkedin.com/in/zhu-benjamin/)
-- Run the command `npm run dev`
+- You will need the file `.env` and user permission to access firebase console. For that, contact me on [LinkedIn](https://www.linkedin.com/in/zhu-benjamin/)
+- Run the command `npm run dev` to launch the app
 
 <!-- Choix dataset -->
 <h2>Explanation</h2>
