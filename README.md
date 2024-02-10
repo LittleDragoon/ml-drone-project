@@ -10,7 +10,7 @@
 
 ℹ️ This repository is only the `front-end part` of the `whole` project we have been working on with [Romain Maillard](https://www.linkedin.com/in/romain-maillard6/) and [May Ouir](https://www.linkedin.com/in/may-ouir-499b83184/), also at Mines Nancy with me.
 
-You will find the complementary repository (server + AI code) here : [TODO insert]
+You will find the complementary repository (server + AI code) here : [back-end](https://github.com/romainm13/crazyflie_backend?tab=readme-ov-file)
 
 <!-- Setup -->
 <h2>Setup</h2>
@@ -41,4 +41,4 @@ Use of NextJs and Tailwind CSS for efficiency and fast development.
 
 <h2>Usage</h2>
 
-⚠️ The main features of this application will not work on the vercel URL as it is only connected to the server `locally`. If you want to work on the whole project, as mentioned before, you also need the server repo which is here : (TODO insert)
+⚠️ The main features of this application will not work on the vercel URL as it is only connected to the server `locally`. If you want to work on the whole project, as mentioned before, you also need the server repo which is here : [Back-end](https://github.com/romainm13/crazyflie_backend?tab=readme-ov-file)
